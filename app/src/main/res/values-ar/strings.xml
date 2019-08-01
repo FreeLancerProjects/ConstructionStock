@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">بورصة البناء</string>
+    <string name="login" >دخول</string>
+    <string name="skip">تخطي</string>
+    <string name="user_name">إسم المستخدم</string>
+    <string name="user_password">كلمة المرور</string>
+    <string name="user_email">البريد الإلكترونى</string>
+    <string name="user_phone">رقم الجوال</string>
+    <string name="register">تسجيل</string>
+    <string name="si_su">قم بتسجيل الدخول أو إنشاء حساب جديد .</string>
+    <string name="home">الرئيسية</string>
+    <string name="orders" >طلباتى</string>
+    <string name="more" >المزيد</string>
+    <string name="bank_account">الحسابات البنكية</string>
+    <string name="Condition">الشروط والاحكام</string>
+    <string name="about">عن التطبيق</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="language_setting">اعدادات اللغة</string>
+    <string name="Log_out">تسجيل الخروج</string>
+    <string name="accountِ">حسابى</string>
+
+    <string name="choose">اختر</string>
+
+    <string name="next">التالى</string>
+    <string name="previous">السابق</string>
+
+    <string name="user_Full_name">الاسم بالكامل</string>
+    <string name="edit">كلمة المرور</string>
+    <string name="current">الحالية</string>
+    <string name="previou">السابقة</string>
+    <string name="call">إرسال</string>
+    <string name="Message">الموضوع</string>
+    <string name="name">الاسم بالكامل</string>
+    <string name="wait">انتظر قليلا ...</string>
+    <string name="notifications">اشعارات</string>
+    <string name="ok">حسنا !</string>
+    <string name="new_user">إنشاء حساب جديد.</string>
+
+    <string name="country_prompt">إختر الدولة</string>
+    <string name="title">العنوان</string>
+    <string name="information">معلومات عن الشركة</string>
+    <string name="time">الوقت</string>
+    <string name="sign_in">تسجيل دخول</string>
+    <string name="sign_up">إنشاء حساب جديد</string>
+    <string name="cancel">إلغاء</string>
+    <string name="suc"> تم بنجاح !</string>
+    <string name="field_req">الحقل مطلوب</string>
+    <string name="inv_email">البريد الالكتروني غير صحيح</string>
+    <string name="sign_up2">إنشاء حساب</string>
+    <string name="code">الكود</string>
+    <string name="email_exists">البريد الالكتروني موجود مسبقا</string>
+    <string name="something">خطأ ! تحقق من الاتصال بالانترنت</string>
+    <string name="inc_em_pas">البريد الالكتروني او كلمة المرور غير صحيحة</string>
+    <string name="there_are_no_ads_to_display">لا توجد إعلانات لعرضها</string>
+    <string name="city">المدينة</string>
+    <string name="address">العنوان</string>
+    <string name="commercial_image">السجل التجاري</string>
+    <string name="send">إرسال</string>
+    <string name="select_location_on_map">Select Location on Map</string>
+    <string name="perm_image_denied">لم يتمكن التطبيق للوصول الى الصور</string>
+    <string name="upload_image">تحميل الصور</string>
+    <string name="select_a_picture_to_upload">إختر صورة لرفعها</string>
+    <string name="gallery">البوم الصور</string>
+    <string name="camera">الكاميرا</string>
+    <string name="search_for_address">إبحث عن عنوان</string>
+    <string name="failed">فشل ! حاول مرة اخرى لاحقا</string>
+    <string name="services">الخدمات</string>
+    <string name="general_settings">إعدادات عامة</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="terms_of_service">شروط الاستخدام</string>
+    <string name="rate_this_app">قيم التطبيق</string>
+    <string name="help">المساعدة</string>
+    <string name="about_tour">نبذة عن التطبيق</string>
+    <string name="allow_to_receive_orders">السماح بإستقبال الطلبات</string>
+    <string name="select_language">إختر اللغة</string>
+    <string name="select">إختر</string>
+    <string name="ch_city">إختر المدينة</string>
+    <string name="ch_service">إختر خدمة</string>
+    <string name="ch_cont_size">إختر الحجم</string>
+    <string name="req_sent_admin_reply">تم إرسال طلبك بنحاج ! . سوف تقوم الإدارة بمراجعك طلبك والرد عليكم.</string>
+    <string name="req_pend">طلبك قيد الإنتظار عند مراجعة طلبك سوف تقوم الادارة بالرد عليكم.</string>
+    <string name="not">إشعارات</string>
+    <string name="no_notifications_to_display">لا توجد إشعارات لعرضها</string>
+    <string name="water_delivery_order">طلبات توصيل مياة</string>
+    <string name="shipping_and_transportation_orders">طلبات شحن ونقل</string>
+    <string name="equipment_rental_orders">طلبات تأجير معدات</string>
+    <string name="back">رجوع</string>
+    <string name="shipment_and_transportation">شحن ونقل</string>
+    <string name="type_of_load">نوع الحمولة</string>
+    <string name="delivery_information">نرجو تزويدنا بمعلومات التوصيل</string>
+    <string name="ch_truck">إختر الشاحنة</string>
+    <string name="ch_img">إختر صورة</string>
+    <string name="ch_pay_mthd">إختر طريقة الدفع</string>
+    <string name="order_sent_successfull">تم إرسال الطلب بنجاح</string>
+    <string name="order_sent_successfully_order_number_is">تم إرسال طلبك بنجاح رقم طلبك هو # </string>
+
+
+
+
+    <string name="accept">الموافقة</string>
+    <string name="refuse">الرفض</string>
+
+    <string name="arrival_time">وقت التوصيل</string>
+    <string name="desc">الوصف</string>
+
+    <string name="no_orders_to_display">لا توجد طلبات لعرضها</string>
+    <string name="order_accepted">تم الموافقة على طلبك</string>
+    <string name="done">تم الانجاز</string>
+    <string name="we_pleaser">سعداك لخدمة سيادتكم.</string>
+</resources>

@@ -1,3 +1,111 @@
 <resources>
     <string name="app_name">Construction Stock</string>
+
+    <string name="login">Log in</string>
+    <string name="skip">skip</string>
+    <string name="user_name">user_name</string>
+    <string name="user_password">password</string>
+    <string name="user_email">Email</string>
+    <string name="user_phone">Phone number</string>
+    <string name="register">register</string>
+    <string name="si_su">Please Sign in or sign up .</string>
+    <string name="home">Home</string>
+    <string name="orders">My Order</string>
+    <string name="accountِ">Profile</string>
+    <string name="more">More</string>
+    <string name="bank_account">Bank Accounts</string>
+    <string name="Condition">Terms and Conditions</string>
+    <string name="about">About App</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="language_setting">Language Settings</string>
+    <string name="Log_out">Logout</string>
+    <string name="choose">Choose</string>
+
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+
+
+    <string name="user_Full_name">Name</string>
+    <string name="edit">Edit</string>
+
+    <string name="current">Current</string>
+    <string name="previou">Previous</string>
+
+    <string name="call">Send</string>
+    <string name="Message">Subject</string>
+    <string name="name">name</string>
+    <string name="wait">wait ...</string>
+    <string name="notifications">Notification</string>
+    <string name="ok">OK</string>
+    <string name="new_user">Sign up.</string>
+    <string name="suc">Success !</string>
+
+    <string name="country_prompt">Choose a country</string>
+
+
+    <string name="title">Title</string>
+    <string name="information">Information</string>
+    <string name="time">Time</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="cancel">Cancel</string>
+    <string name="field_req">Field is required</string>
+    <string name="inv_email">Invalid email address</string>
+    <string name="sign_up2">Sign Up</string>
+    <string name="code">code</string>
+    <string name="email_exists">Email exists</string>
+    <string name="something">Error ! Something went haywire</string>
+    <string name="inc_em_pas">Incorrect email or password</string>
+    <string name="there_are_no_ads_to_display">There are no ads to display</string>
+    <string name="city">City</string>
+    <string name="address">Address</string>
+    <string name="commercial_image">Commercial image</string>
+    <string name="send">Send</string>
+    <string name="select_location_on_map">Select Location on Map</string>
+    <string name="perm_image_denied">Permission denied</string>
+    <string name="upload_image">Upload image</string>
+    <string name="select_a_picture_to_upload">Select a picture to upload</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="search_for_address">Search for address</string>
+    <string name="failed">Failed ! try again later</string>
+    <string name="services">Services</string>
+    <string name="general_settings">General Settings</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="rate_this_app">Rate this App</string>
+    <string name="help">Help</string>
+    <string name="about_tour">About Tour</string>
+    <string name="allow_to_receive_orders">Allow to receive orders</string>
+    <string name="select_language">Select Language</string>
+    <string name="select">Select</string>
+    <string name="ch_city">Choose city</string>
+    <string name="ch_service">choose service</string>
+    <string name="ch_cont_size">Choose container size</string>
+    <string name="req_sent_admin_reply">Your request is sent successfully ! . Admin will review your request and reply.</string>
+    <string name="req_pend">Your request is pending</string>
+    <string name="not">Notifications</string>
+    <string name="no_notifications_to_display">No notifications to display</string>
+    <string name="water_delivery_order">Water Delivery Orders</string>
+    <string name="shipping_and_transportation_orders">Shipping and Transportation Orders</string>
+    <string name="equipment_rental_orders">Equipment Rental Orders</string>
+    <string name="back">Back</string>
+    <string name="shipment_and_transportation">Shipment and transportation</string>
+    <string name="type_of_load">Type of load</string>
+    <string name="delivery_information">Delivery information</string>
+    <string name="ch_truck">Choose truck</string>
+    <string name="ch_img">Choose image</string>
+    <string name="ch_pay_mthd">Choose payment method</string>
+    <string name="order_sent_successfull">Order sent successfully</string>
+    <string name="order_sent_successfully_order_number_is">Order sent successfully . order number is #</string>
+    <string name="accept">Accept</string>
+    <string name="refuse">Refuse</string>
+    <string name="arrival_time">Arrival time</string>
+    <string name="desc">Description</string>
+    <string name="no_orders_to_display">No orders to display</string>
+    <string name="order_accepted">Order accepted</string>
+    <string name="done">done</string>
+    <string name="we_pleaser">We are pleased to serve you</string>
+
 </resources>
