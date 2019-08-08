@@ -1,7 +1,9 @@
 package com.creativeshare.constructionstock.activities_fragments.sign_in_sign_up_activity.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,20 +26,29 @@ import com.creativeshare.constructionstock.preferences.Preferences;
 import com.creativeshare.constructionstock.remote.Api;
 import com.creativeshare.constructionstock.share.Common;
 import com.creativeshare.constructionstock.tags.Tags;
+import com.mukesh.countrypicker.Country;
+import com.mukesh.countrypicker.CountryPicker;
+import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
 
 import java.io.IOException;
+import java.util.Locale;
 
+import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class Fragment_Login extends Fragment {
+public class Fragment_Login extends Fragment implements OnCountryPickerListener {
     private Button btn_login;
-    private TextView tv_skip, tv_sign_up;
-    private EditText edt_email, edt_password;
+    private TextView tv_skip, tv_sign_up , tv_code;
+    private CountryPicker picker;
+    private EditText edt_phone, edt_password;
     private Login_Activity activity;
     private Preferences preferences;
+    private String code = "";
+    private ImageView image_phone_code;
+    private String current_language;
 
     public static Fragment_Login newInstance() {
 
@@ -54,12 +66,31 @@ public class Fragment_Login extends Fragment {
 
     private void initView(final View view) {
         activity = (Login_Activity) getActivity();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
         btn_login = view.findViewById(R.id.btn_login);
         tv_skip = view.findViewById(R.id.tv_skip);
         tv_sign_up = view.findViewById(R.id.tv_sign_up);
-        edt_email = view.findViewById(R.id.edt_email);
+        edt_phone = view.findViewById(R.id.edt_phone);
         edt_password = view.findViewById(R.id.edt_password);
+        tv_code = view.findViewById(R.id.tv_code);
+        image_phone_code = view.findViewById(R.id.image_phone_code);
 
+
+        if (current_language.equals("ar")) {
+            image_phone_code.setRotation(180.0f);
+        }
+
+        CreateCountryDialog();
+
+
+        image_phone_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                picker.showDialog(activity);
+            }
+        });
         tv_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,28 +112,59 @@ public class Fragment_Login extends Fragment {
             }
         });
     }
+    private void CreateCountryDialog() {
+        CountryPicker.Builder builder = new CountryPicker.Builder()
+                .canSearch(true)
+                .with(activity)
+                .listener(this);
+        picker = builder.build();
 
+        TelephonyManager telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+
+
+        if (picker.getCountryFromSIM() != null) {
+            updateUi(picker.getCountryFromSIM());
+
+        } else if (telephonyManager != null && picker.getCountryByISO(telephonyManager.getNetworkCountryIso()) != null) {
+            updateUi(picker.getCountryByISO(telephonyManager.getNetworkCountryIso()));
+
+
+        } else if (picker.getCountryByLocale(Locale.getDefault()) != null) {
+            updateUi(picker.getCountryByLocale(Locale.getDefault()));
+
+        } else {
+            tv_code.setText("+966");
+            code = "966";
+        }
+
+
+    }
+    private void updateUi(Country country) {
+
+        tv_code.setText(country.getDialCode());
+        code = country.getDialCode();
+
+
+    }
     private void checkData() {
-        String m_email = edt_email.getText().toString().trim();
+        String m_phone = edt_phone.getText().toString().trim();
         String m_password = edt_password.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(m_email) &&
-                Patterns.EMAIL_ADDRESS.matcher(m_email).matches() &&
-                !TextUtils.isEmpty(m_password)
+        if (!TextUtils.isEmpty(m_phone) &&
+                !TextUtils.isEmpty(m_password)&&
+                !TextUtils.isEmpty(code)
         ) {
-            edt_email.setError(null);
+            edt_phone.setError(null);
             edt_password.setError(null);
-            Common.CloseKeyBoard(activity, edt_email);
-            Login(m_email, m_password);
+            Common.CloseKeyBoard(activity, edt_phone);
+            Login(m_phone,code, m_password);
         } else {
 
 
-            if (TextUtils.isEmpty(m_email)) {
-                edt_email.setError(getString(R.string.field_req));
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(m_email).matches()) {
-                edt_email.setError(getString(R.string.inv_email));
+            if (TextUtils.isEmpty(m_phone)) {
+                edt_phone.setError(getString(R.string.field_req));
             } else {
-                edt_email.setError(null);
+                edt_phone.setError(null);
 
             }
 
@@ -113,15 +175,22 @@ public class Fragment_Login extends Fragment {
                 edt_password.setError(null);
 
             }
+
+            if (TextUtils.isEmpty(code)) {
+                tv_code.setError(getString(R.string.field_req));
+            } else {
+                tv_code.setError(null);
+
+            }
         }
     }
 
-    private void Login(String m_email, String m_password) {
+    private void Login(String m_phone, String code, String m_password) {
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .sign_in( m_email, m_password)
+                .sign_in( m_phone,code.replace("+", "00"), m_password)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -156,4 +225,8 @@ public class Fragment_Login extends Fragment {
     }
 
 
+    @Override
+    public void onSelectCountry(Country country) {
+        updateUi(country);
+    }
 }

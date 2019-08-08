@@ -21,4 +21,6 @@
     <color name="sheet_window_bg">#66000000</color>
     <color name="delete_color">#E21B1B</color>
     <color name="done">#198E02</color>
+    <color name="yellow1">#062b3b</color>
+
 </resources>

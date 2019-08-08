@@ -20,7 +20,15 @@
     <string name="language_setting">Language Settings</string>
     <string name="Log_out">Logout</string>
     <string name="choose">Choose</string>
-
+    <string name="order_number"> order number</string>
+    <string name="add_rate"> add rate</string>
+    <string name="just_now">just now</string>
+    <string name="a_minute_ago">a minute ago</string>
+    <string name="min">MIN</string>
+    <string name="an_hour_ago">an hour ago</string>
+    <string name="hs">Hs</string>
+    <string name="yesterday">yesterday</string>
+    <string name="day">D</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -56,7 +64,7 @@
     <string name="code">code</string>
     <string name="email_exists">Email exists</string>
     <string name="something">Error ! Something went haywire</string>
-    <string name="inc_em_pas">Incorrect email or password</string>
+    <string name="inc_em_pas">Incorrect phone or password</string>
     <string name="there_are_no_ads_to_display">There are no ads to display</string>
     <string name="city">City</string>
     <string name="address">Address</string>
@@ -107,5 +115,6 @@
     <string name="order_accepted">Order accepted</string>
     <string name="done">done</string>
     <string name="we_pleaser">We are pleased to serve you</string>
+    <string name="phone_exists">phone exists or password less than 6 degit</string>
 
 </resources>

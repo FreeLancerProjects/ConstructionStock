@@ -20,7 +20,15 @@
     <string name="language_setting">اعدادات اللغة</string>
     <string name="Log_out">تسجيل الخروج</string>
     <string name="accountِ">حسابى</string>
-
+    <string name="order_number">رقم الطلب</string>
+    <string name="add_rate">إضافة تقييم</string>
+    <string name="just_now">الان</string>
+    <string name="a_minute_ago">منذ دقيقة</string>
+    <string name="min">دقيقة</string>
+    <string name="an_hour_ago">منذ ساعة</string>
+    <string name="hs">ساعة</string>
+    <string name="yesterday">امس</string>
+    <string name="day">يوم</string>
     <string name="choose">اختر</string>
 
     <string name="next">التالى</string>
@@ -52,7 +60,7 @@
     <string name="code">الكود</string>
     <string name="email_exists">البريد الالكتروني موجود مسبقا</string>
     <string name="something">خطأ ! تحقق من الاتصال بالانترنت</string>
-    <string name="inc_em_pas">البريد الالكتروني او كلمة المرور غير صحيحة</string>
+    <string name="inc_em_pas">رقم الجوال او كلمة المرور غير صحيحة</string>
     <string name="there_are_no_ads_to_display">لا توجد إعلانات لعرضها</string>
     <string name="city">المدينة</string>
     <string name="address">العنوان</string>
@@ -109,4 +117,5 @@
     <string name="order_accepted">تم الموافقة على طلبك</string>
     <string name="done">تم الانجاز</string>
     <string name="we_pleaser">سعداك لخدمة سيادتكم.</string>
+    <string name="phone_exists">  رقم الجوال موجود مسبقا او كلمة المرور اقل من 6 ارقام</string>
 </resources>

@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="true"
+    android:background="@color/white"
     android:focusable="true"
     >
     <androidx.appcompat.widget.Toolbar
@@ -42,6 +43,7 @@
 
 
         <ImageView
+            android:layout_marginLeft="7dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/logo"
@@ -69,7 +71,7 @@
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="230dp"
-                android:layout_height="120dp"
+                android:layout_height="170dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/logo"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -228,6 +230,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+<!--
                 <LinearLayout
 
                     android:layout_width="match_parent"
@@ -267,6 +270,7 @@
 
 
                 </LinearLayout>
+-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
