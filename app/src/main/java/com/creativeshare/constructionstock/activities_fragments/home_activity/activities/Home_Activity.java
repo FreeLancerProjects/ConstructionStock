@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -23,18 +20,11 @@ import com.creativeshare.constructionstock.activities_fragments.sign_in_sign_up_
 import com.creativeshare.constructionstock.language.Language_Helper;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
-import com.creativeshare.constructionstock.remote.Api;
 import com.creativeshare.constructionstock.tags.Tags;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
-import java.io.IOException;
+import java.util.Locale;
 
 import io.paperdb.Paper;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class Home_Activity extends AppCompatActivity {
@@ -50,13 +40,13 @@ public class Home_Activity extends AppCompatActivity {
     private Fragment_Orders fragment_orders;
     private UserModel userModel;
     private Preferences preferences;
-    private View root;
-    //private BottomSheetBehavior behavior;
 
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(Language_Helper.updateResources(base, Preferences.getInstance().getLanguage(base)));
+        Paper.init(base);
+        super.attachBaseContext(Language_Helper.updateResources(base,Paper.book().read("lang", Locale.getDefault().getLanguage())));
+
     }
 
     @Override
@@ -66,7 +56,6 @@ public class Home_Activity extends AppCompatActivity {
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
         fragmentManager = this.getSupportFragmentManager();
-        userModel.getUser().getId();
         if (savedInstanceState == null) {
             DisplayFragmentHome();
             DisplayFragmentMain();

@@ -9,22 +9,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
 import com.creativeshare.constructionstock.adapters.Categories_Adapter;
-import com.creativeshare.constructionstock.models.Categories_Model;
+import com.creativeshare.constructionstock.models.CategoriesDataModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
 import com.creativeshare.constructionstock.remote.Api;
 import com.creativeshare.constructionstock.tags.Tags;
 
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,12 +41,11 @@ public class Fragment_main extends Fragment {
     private String curent_language;
     private ImageView arrow;
     private LinearLayout ll_back;
-    private RecyclerView categories;
+    private RecyclerView recView;
+    private LinearLayoutManager manager;
     private ProgressBar progBar;
     private Categories_Adapter categories_adapter;
-    private ArrayList<Categories_Model> categories_models;
-    private Categories_Model categories_model;
-    List<Categories_Model.CData> list;
+    private List<CategoriesDataModel.CategoryModel> categoryModelList;
     public static Fragment_main newInstance() {
         return new Fragment_main();
     }
@@ -56,74 +55,72 @@ public class Fragment_main extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        intitview(view);
-        getdata();
+        initView(view);
+        getData();
         return view;
     }
 
-    private void intitview(View view) {
-        categories_models = new ArrayList<>();
+    private void initView(View view) {
+        categoryModelList = new ArrayList<>();
         activity = (Home_Activity) getActivity();
         preferences = Preferences.getInstance();
         Paper.init(activity);
         curent_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
         arrow = view.findViewById(R.id.arrow);
         ll_back = view.findViewById(R.id.ll_back);
-
-        categories = view.findViewById(R.id.recv_main);
+        recView = view.findViewById(R.id.recv_main);
         progBar = view.findViewById(R.id.progBarAds);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-      /*  if (curent_language.equals("ar")) {
-//            arrow.setRotation(180.0f);
-        }*/
 
-        categories.setItemViewCacheSize(25);
-        categories.setDrawingCacheEnabled(true);
-        categories.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        categories_adapter = new Categories_Adapter(list, activity,this);
-        categories.setAdapter(categories_adapter);
-        categories.setLayoutManager(new GridLayoutManager(activity, 1));
+        recView.setItemViewCacheSize(25);
+        recView.setDrawingCacheEnabled(true);
+        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        manager = new LinearLayoutManager(activity);
+        recView.setLayoutManager(manager);
+        categories_adapter = new Categories_Adapter(categoryModelList, activity,this);
+        recView.setAdapter(categories_adapter);
 
-       /* ll_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.Back();
-            }
-        });*/
+
 
     }
 
 
-   private void getdata() {
-        Api.getService(Tags.base_url).get_categories().enqueue(new Callback<List<Categories_Model>>() {
+   private void getData() {
+        Api.getService(Tags.base_url).get_categories().enqueue(new Callback<CategoriesDataModel>() {
             @Override
-            public void onResponse(Call<List<Categories_Model>> call, Response<List<Categories_Model>> response) {
-                if (response.isSuccessful()) {
-                    progBar.setVisibility(View.GONE);
-                    if (response.body().size() > 0) {
-                        categories_models.addAll(response.body());
+            public void onResponse(Call<CategoriesDataModel> call, Response<CategoriesDataModel> response) {
+                progBar.setVisibility(View.GONE);
+
+                if (response.isSuccessful()&&response.body()!=null) {
+                    if (response.body().getData().size() > 0) {
+                        categoryModelList.addAll(response.body().getData());
                         categories_adapter.notifyDataSetChanged();
 
-                    } else {
-                        Log.e("message", "no data found");
                     }
                 } else {
-                    Log.e("error code", response.code() + "" + response.errorBody());
+                    try {
+                        Log.e("code_error",response.code()+"_"+response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Categories_Model>> call, Throwable t) {
-                progBar.setVisibility(View.GONE);
+            public void onFailure(Call<CategoriesDataModel> call, Throwable t) {
+                try {
+                    progBar.setVisibility(View.GONE);
+                    Log.e("error message", t.getMessage());
+                }catch (Exception e){}
 
-                Log.e("error message", t.getMessage());
 
             }
         });
     }
 
 
-    public void setItemData(Categories_Model.CData model) {
+    public void setItemData(CategoriesDataModel.CategoryModel model) {
         activity.DisplayFragmentMain();
     }
 }

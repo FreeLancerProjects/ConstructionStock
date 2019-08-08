@@ -4,13 +4,11 @@ package com.creativeshare.constructionstock.activities_fragments.home_activity.f
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -24,16 +22,9 @@ import com.creativeshare.constructionstock.adapters.OrdersAdapter;
 import com.creativeshare.constructionstock.models.OrderDataModel;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
-import com.creativeshare.constructionstock.remote.Api;
-import com.creativeshare.constructionstock.tags.Tags;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class Fragment_Orders extends Fragment {
@@ -76,15 +67,8 @@ public class Fragment_Orders extends Fragment {
         recView = view.findViewById(R.id.recView);
         manager = new LinearLayoutManager(activity);
         recView.setLayoutManager(manager);
-        if (userModel.getUser()==null)
-        {
-            adapter = new OrdersAdapter(orderModelList,activity,this, Tags.TYPE_USER);
-        }else
-        {
-            adapter = new OrdersAdapter(orderModelList,activity,this, Tags.TYPE_COMPANY);
 
-        }
-        recView.setAdapter(adapter);
+        //recView.setAdapter(adapter);
         recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -115,15 +99,7 @@ public class Fragment_Orders extends Fragment {
 
     public void getOrders()
     {
-        String user_type;
-        int company_id;
-        if (userModel.getUser()==null)
-        {
-            user_type = Tags.TYPE_USER;
 
-
-        }
-        Log.e("user_id",userModel.getUser().getId()+"_");
        /* Api.getService(Tags.base_url)
                 .getOrders(user_type,userModel.getUser().getId(),company_id,"1",1)
                 .enqueue(new Callback<OrderDataModel>() {
@@ -171,12 +147,7 @@ public class Fragment_Orders extends Fragment {
 
     private void loadMore(int page) {
 
-        String user_type;
-        if (userModel.getUser()==null)
-        {
-            user_type = Tags.TYPE_USER;
 
-        }
       /*  Api.getService(Tags.base_url)
                 .getOrders(user_type,userModel.getUser().getId(),userModel.getUser().getCompany_information().getId(),"1",page)
                 .enqueue(new Callback<OrderDataModel>() {

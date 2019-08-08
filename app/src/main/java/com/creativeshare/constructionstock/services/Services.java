@@ -3,11 +3,9 @@ package com.creativeshare.constructionstock.services;
 
 
 
-import com.creativeshare.constructionstock.models.Categories_Model;
+import com.creativeshare.constructionstock.models.CategoriesDataModel;
 import com.creativeshare.constructionstock.models.TermsModel;
 import com.creativeshare.constructionstock.models.UserModel;
-
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,7 +40,7 @@ public interface Services {
 
 
     @GET("api/categories")
-    Call<List<Categories_Model>> get_categories();
+    Call<CategoriesDataModel> get_categories();
 
 
     @FormUrlEncoded

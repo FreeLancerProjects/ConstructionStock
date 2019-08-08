@@ -16,7 +16,6 @@ import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Notifications;
 import com.creativeshare.constructionstock.models.NotificationDataModel;
 import com.creativeshare.constructionstock.share.TimeAgo;
-import com.creativeshare.constructionstock.tags.Tags;
 
 import java.util.List;
 
@@ -117,23 +116,5 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        NotificationDataModel.NotificationModel notificationModel = notificationModelList.get(position);
-        if (notificationModel == null) {
-            return ITEM_LOAD;
-        } else {
-            if (notificationModel.getNotfication_type().equals(Tags.NOTIFICATION_TYPE_OTHER))
-            {
-                return ITEM_DATA_NOT_OTHER;
-            }else
-                {
-                    return ITEM_DATA;
 
-                }
-        }
-
-
-
-    }
 }

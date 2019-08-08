@@ -14,11 +14,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Orders;
 import com.creativeshare.constructionstock.models.OrderDataModel;
-import com.creativeshare.constructionstock.tags.Tags;
 
 import java.util.List;
 
@@ -108,17 +106,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public void BindData(OrderDataModel.OrderModel orderModel) {
             tv_order_num.setText("#" + orderModel.getId());
-
-            if (user_type.equals(Tags.TYPE_USER))
-            {
-                tv_name.setText(orderModel.getTo_name());
-
-            }else
-                {
-                    tv_name.setText(orderModel.getFrom_name());
-
-                }
-
 
 
             if (fragment instanceof Fragment_Orders)

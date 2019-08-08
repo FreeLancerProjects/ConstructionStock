@@ -118,4 +118,5 @@
     <string name="done">تم الانجاز</string>
     <string name="we_pleaser">سعداك لخدمة سيادتكم.</string>
     <string name="phone_exists">  رقم الجوال موجود مسبقا او كلمة المرور اقل من 6 ارقام</string>
+    <string name="no_category_to_display">لا توجد تفاصيل لعرضها</string>
 </resources>

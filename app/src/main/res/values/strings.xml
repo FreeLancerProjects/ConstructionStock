@@ -33,7 +33,6 @@
     <string name="previous">Previous</string>
 
 
-
     <string name="user_Full_name">Name</string>
     <string name="edit">Edit</string>
 
@@ -116,5 +115,6 @@
     <string name="done">done</string>
     <string name="we_pleaser">We are pleased to serve you</string>
     <string name="phone_exists">phone exists or password less than 6 degit</string>
+    <string name="no_category_to_display">No category to display</string>
 
 </resources>

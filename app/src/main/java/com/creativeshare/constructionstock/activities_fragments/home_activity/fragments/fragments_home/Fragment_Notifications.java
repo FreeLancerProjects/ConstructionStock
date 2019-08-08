@@ -2,13 +2,11 @@ package com.creativeshare.constructionstock.activities_fragments.home_activity.f
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,18 +21,12 @@ import com.creativeshare.constructionstock.adapters.NotificationsAdapter;
 import com.creativeshare.constructionstock.models.NotificationDataModel;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
-import com.creativeshare.constructionstock.remote.Api;
-import com.creativeshare.constructionstock.tags.Tags;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class Fragment_Notifications extends Fragment {
 
@@ -132,16 +124,7 @@ public class Fragment_Notifications extends Fragment {
         String user_id;
 
 
-        if (userModel.getUser()==null)
-        {
-            user_type = Tags.TYPE_USER;
-            user_id = String.valueOf(userModel.getUser().getId());
 
-        }else
-            {
-                user_type = Tags.TYPE_COMPANY;
-                user_id = String.valueOf(userModel.getUser().getId());
-            }
 
 
      /*   Api.getService(Tags.base_url)
@@ -198,16 +181,7 @@ public class Fragment_Notifications extends Fragment {
         String user_type;
         String company_id;
         String user_id;
-        if (userModel.getUser()==null)
-        {
-            user_type = Tags.TYPE_USER;
-            user_id = String.valueOf(userModel.getUser().getId());
-            company_id ="0";
-        }else
-        {
-            user_type = Tags.TYPE_COMPANY;
-            user_id = String.valueOf(userModel.getUser().getId());
-        }
+
 
        /* Api.getService(Tags.base_url)
                 .getNotifications(user_type,user_id,company_id,page_index)

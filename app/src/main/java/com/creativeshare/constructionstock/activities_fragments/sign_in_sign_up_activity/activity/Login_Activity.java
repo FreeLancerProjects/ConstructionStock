@@ -18,6 +18,8 @@ import com.creativeshare.constructionstock.language.Language_Helper;
 import com.creativeshare.constructionstock.preferences.Preferences;
 import com.creativeshare.constructionstock.tags.Tags;
 
+import java.util.Locale;
+
 import io.paperdb.Paper;
 
 
@@ -32,9 +34,10 @@ public class Login_Activity extends AppCompatActivity {
 
 
     @Override
-    protected void attachBaseContext(Context base)
-    {
-        super.attachBaseContext(Language_Helper.updateResources(base, Preferences.getInstance().getLanguage(base)));
+    protected void attachBaseContext(Context base) {
+        Paper.init(base);
+        super.attachBaseContext(Language_Helper.updateResources(base,Paper.book().read("lang", Locale.getDefault().getLanguage())));
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
