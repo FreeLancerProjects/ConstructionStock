@@ -3,6 +3,8 @@ package com.creativeshare.constructionstock.models;
 import java.io.Serializable;
 
 public class TermsModel implements Serializable {
+
+
     private String ar_content;
     private String en_content;
 
