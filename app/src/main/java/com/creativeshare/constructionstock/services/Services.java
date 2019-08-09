@@ -1,9 +1,9 @@
 package com.creativeshare.constructionstock.services;
 
 
-
-
 import com.creativeshare.constructionstock.models.CategoriesDataModel;
+import com.creativeshare.constructionstock.models.PlaceGeocodeData;
+import com.creativeshare.constructionstock.models.PlaceMapDetailsData;
 import com.creativeshare.constructionstock.models.TermsModel;
 import com.creativeshare.constructionstock.models.UserModel;
 
@@ -13,7 +13,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-
+import retrofit2.http.Query;
 
 
 public interface Services {
@@ -53,6 +53,19 @@ public interface Services {
 
     @GET("api/terms-and-conditions")
     Call<TermsModel> getTerms();
+
+    @GET("place/findplacefromtext/json")
+    Call<PlaceMapDetailsData> searchOnMap(@Query(value = "inputtype") String inputtype,
+                                          @Query(value = "input") String input,
+                                          @Query(value = "fields") String fields,
+                                          @Query(value = "language") String language,
+                                          @Query(value = "key") String key
+    );
+
+    @GET("geocode/json")
+    Call<PlaceGeocodeData> getGeoData(@Query(value = "latlng") String latlng,
+                                      @Query(value = "language") String language,
+                                      @Query(value = "key") String key);
 
 
 }

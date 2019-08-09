@@ -1,5 +1,7 @@
 package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
+import com.creativeshare.constructionstock.activities_fragments.sub_category_activity.SubCategoryActivity;
 import com.creativeshare.constructionstock.adapters.Categories_Adapter;
 import com.creativeshare.constructionstock.models.CategoriesDataModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
 import com.creativeshare.constructionstock.remote.Api;
+import com.creativeshare.constructionstock.singleton.CartSingleton;
 import com.creativeshare.constructionstock.tags.Tags;
 
 import java.io.IOException;
@@ -121,6 +125,22 @@ public class Fragment_main extends Fragment {
 
 
     public void setItemData(CategoriesDataModel.CategoryModel model) {
-        activity.DisplayFragmentMain();
+        Intent intent = new Intent(activity, SubCategoryActivity.class);
+        intent.putExtra("data",model);
+        startActivityForResult(intent,1133);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1133&&resultCode== Activity.RESULT_OK&&data!=null)
+        {
+            if (data.hasExtra("hasItems"))
+            {
+                CartSingleton singleton = CartSingleton.newInstance();
+                activity.updateCartCount(singleton.getItemCount());
+            }
+        }
     }
 }

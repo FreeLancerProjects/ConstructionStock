@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#00405c</color>
-    <color name="colorPrimaryDark">#062b3b</color>
-    <color name="colorAccent">#4291aa</color>
+    <color name="colorPrimaryDark">#00405c</color>
+    <color name="colorAccent">#00405c</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -22,5 +22,9 @@
     <color name="delete_color">#E21B1B</color>
     <color name="done">#198E02</color>
     <color name="yellow1">#062b3b</color>
+    <color name="trans">#9900405c</color>
+    <color name="cart">#FFB300</color>
+    <color name="colorPrimary_dark">#02364D</color>
+
 
 </resources>

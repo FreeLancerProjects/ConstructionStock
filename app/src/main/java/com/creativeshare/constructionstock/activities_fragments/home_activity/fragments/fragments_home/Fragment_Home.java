@@ -1,9 +1,12 @@
 package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -12,10 +15,12 @@ import androidx.fragment.app.Fragment;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.creativeshare.constructionstock.R;
+import com.creativeshare.constructionstock.activities_fragments.cart_activity.CartActivity;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
 import com.creativeshare.constructionstock.share.Common;
+import com.creativeshare.constructionstock.singleton.CartSingleton;
 
 
 import java.util.Locale;
@@ -30,6 +35,9 @@ public class Fragment_Home extends Fragment {
     private String current_lang;
     private UserModel userModel;
     private Preferences preferences;
+    private FrameLayout flCart;
+    private TextView tvCartCount;
+    private CartSingleton singleton;
 
     public static Fragment_Home newInstance() {
         return new Fragment_Home();
@@ -47,6 +55,7 @@ public class Fragment_Home extends Fragment {
     }
 
     private void initView(View view) {
+        singleton = CartSingleton.newInstance();
         preferences = Preferences.getInstance();
         activity = (Home_Activity) getActivity();
         userModel = preferences.getUserData(activity);
@@ -55,15 +64,44 @@ public class Fragment_Home extends Fragment {
 
         tv_title = view.findViewById(R.id.tv_title);
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+        flCart = view.findViewById(R.id.flCart);
+        tvCartCount = view.findViewById(R.id.tvCartCount);
 
+        flCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CartActivity.class);
+                startActivityForResult(intent,1598);
+            }
+        });
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1598 && resultCode== Activity.RESULT_OK&&data!=null)
+        {
+            if (data.hasExtra("hasItems"))
+            {
+                boolean hasItems = data.getBooleanExtra("hasItems",false);
+                if (hasItems)
+                {
+                    updateCartCount(singleton.getItemCount());
+                }else
+                    {
+                        updateCartCount(0);
+                    }
+            }else if (data.hasExtra("order_sent"))
+            {
 
+            }
+        }
+    }
 
     private void setUpBottomNav() {
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.home, R.drawable.ic_home, R.color.colorPrimary);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.orders, R.drawable.ic_cart, R.color.colorPrimary);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.orders, R.drawable.ic_gift, R.color.colorPrimary);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.not), R.drawable.ic_notification, R.color.colorPrimary);
         AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.more, R.drawable.ic_more, R.color.colorPrimary);
 
@@ -149,5 +187,17 @@ public class Fragment_Home extends Fragment {
 
         }
         bottomNavigationView.setCurrentItem(pos, false);
+    }
+
+    public void updateCartCount(int count)
+    {
+        if (count ==0)
+        {
+            tvCartCount.setVisibility(View.GONE);
+        }else
+            {
+                tvCartCount.setText(String.valueOf(count));
+                tvCartCount.setVisibility(View.VISIBLE);
+            }
     }
 }

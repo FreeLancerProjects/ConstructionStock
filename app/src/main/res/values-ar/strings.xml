@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="map_api_key">AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI</string>
 
     <string name="app_name">بورصة البناء</string>
     <string name="login" >دخول</string>
@@ -119,4 +120,12 @@
     <string name="we_pleaser">سعداك لخدمة سيادتكم.</string>
     <string name="phone_exists">  رقم الجوال موجود مسبقا او كلمة المرور اقل من 6 ارقام</string>
     <string name="no_category_to_display">لا توجد تفاصيل لعرضها</string>
+    <string name="add_to_cart">أضف للسلة</string>
+    <string name="enter_amount">أدخل الكمية</string>
+    <string name="amount">الكمية</string>
+    <string name="delete">حذف</string>
+    <string name="delete_item">حذف عنصر ؟</string>
+    <string name="empty_cart">السلة فارغة</string>
+    <string name="date">موعد التنزيل</string>
+    <string name="done2">إرسال الطلب</string>
 </resources>

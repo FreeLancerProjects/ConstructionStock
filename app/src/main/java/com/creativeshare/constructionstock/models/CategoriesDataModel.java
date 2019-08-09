@@ -65,4 +65,5 @@ public class CategoriesDataModel implements Serializable {
     public List<CategoryModel> getData() {
         return data;
     }
+
 }

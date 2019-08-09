@@ -23,7 +23,19 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".activities_fragments.sub_category_activity.SubCategoryActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_api_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".activities_fragments.cart_activity.CartActivity"></activity>
+        <activity
+            android:name=".activities_fragments.sub_category_activity.SubCategoryActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <uses-library
             android:name="org.apache.http.legacy"

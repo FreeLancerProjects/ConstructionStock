@@ -4,8 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.creativeshare.constructionstock.R;
@@ -20,8 +27,10 @@ import com.creativeshare.constructionstock.activities_fragments.sign_in_sign_up_
 import com.creativeshare.constructionstock.language.Language_Helper;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
+import com.creativeshare.constructionstock.singleton.CartSingleton;
 import com.creativeshare.constructionstock.tags.Tags;
 
+import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -40,6 +49,7 @@ public class Home_Activity extends AppCompatActivity {
     private Fragment_Orders fragment_orders;
     private UserModel userModel;
     private Preferences preferences;
+    private CartSingleton singleton;
 
 
     @Override
@@ -59,6 +69,21 @@ public class Home_Activity extends AppCompatActivity {
         if (savedInstanceState == null) {
             DisplayFragmentHome();
             DisplayFragmentMain();
+            singleton = CartSingleton.newInstance();
+            try {
+                new Handler()
+                        .postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (fragment_home!=null&&fragment_home.isAdded())
+                                {
+                                    fragment_home.updateCartCount(singleton.getItemCount());
+                                }
+                            }
+                        },1000);
+            }catch (Exception e){}
+
+
         }
 
     }
@@ -244,6 +269,15 @@ public class Home_Activity extends AppCompatActivity {
 
     }
 
+    public void updateCartCount(int count)
+    {
+        try {
+            if (fragment_home!=null&&fragment_home.isAdded())
+            {
+                fragment_home.updateCartCount(count);
+            }
+        }catch (Exception e){}
+    }
    /* public void DisplayFragmentMain() {
 
         if (userModel!=null)
@@ -267,6 +301,27 @@ public class Home_Activity extends AppCompatActivity {
 
     }
 */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        for (Fragment fragment : fragmentList)
+        {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        for (Fragment fragment : fragmentList)
+        {
+            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     public void RefreshActivity(String lang)
     {
         Paper.book().write("lang",lang);
@@ -307,24 +362,77 @@ public class Home_Activity extends AppCompatActivity {
                 DisplayFragmentMain();
             }else
             {
-                if (userModel!=null)
+                if (singleton.getItemCount()>0)
                 {
-                    finish();
+                    CreateCartDialog(singleton.getItemCount());
+
                 }else
-                {
-                    NavigateToSignInActivity(true);
-                }
+                    {
+                        if (userModel!=null)
+                        {
+                            finish();
+                        }else
+                        {
+                            NavigateToSignInActivity(true);
+                        }
+                    }
+
             }
         }
 
     }
+
+    private void CreateCartDialog(int itemCount) {
+
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_remove_cart_item,null);
+        TextView tvCartCount = view.findViewById(R.id.tvCartCount);
+        tvCartCount.setText(String.valueOf(itemCount));
+
+        TextView tvDelete = view.findViewById(R.id.tvDelete);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    singleton.clear();
+                    if (fragment_home!=null&&fragment_home.isAdded())
+                    {
+                        fragment_home.updateCartCount(0);
+                    }
+                }catch (Exception e){}
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+
+    }
+
+
 
     public void Logout() {
         this.userModel = null;
         preferences.create_update_userdata(this,null);
         preferences.create_update_session(this, Tags.session_logout);
         NavigateToSignInActivity(true);
+        CartSingleton singleton = CartSingleton.newInstance();
+        singleton.clear();
     }
 
-
-}
+    }

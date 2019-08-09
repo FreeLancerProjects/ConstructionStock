@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities_fragments.sub_category_activity.SubCategoryActivity">
+    tools:context=".activities_fragments.cart_activity.CartActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
         android:layout_width="0dp"
@@ -42,32 +42,15 @@
                 />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recView"
-        android:layout_width="0dp"
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolBar"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
 
-
-    <TextView
-        android:id="@+id/tvNoDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:text="@string/no_category_to_display"
-        android:visibility="gone"
-
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>

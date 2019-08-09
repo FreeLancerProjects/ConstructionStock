@@ -37,6 +37,39 @@
 
 
             />
+        <FrameLayout
+            android:id="@+id/flCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+
+
+            >
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_cart"
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:clickable="false"
+                android:longClickable="false"
+                android:tint="@color/colorPrimary"
+                />
+            <TextView
+                android:id="@+id/tvCartCount"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/not_bg"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:maxLines="1"
+                android:visibility="gone"
+                android:clickable="false"
+                android:longClickable="false"
+                />
+        </FrameLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
