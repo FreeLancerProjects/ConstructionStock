@@ -2,6 +2,8 @@ package com.creativeshare.constructionstock.services;
 
 
 import com.creativeshare.constructionstock.models.CategoriesDataModel;
+import com.creativeshare.constructionstock.models.ItemCartUploadModel;
+import com.creativeshare.constructionstock.models.OrderIdModel;
 import com.creativeshare.constructionstock.models.PlaceGeocodeData;
 import com.creativeshare.constructionstock.models.PlaceMapDetailsData;
 import com.creativeshare.constructionstock.models.TermsModel;
@@ -9,6 +11,7 @@ import com.creativeshare.constructionstock.models.UserModel;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -67,5 +70,7 @@ public interface Services {
                                       @Query(value = "language") String language,
                                       @Query(value = "key") String key);
 
+    @POST("api/order/add")
+    Call<OrderIdModel> sendOrder(@Body ItemCartUploadModel itemCartUploadModel);
 
 }

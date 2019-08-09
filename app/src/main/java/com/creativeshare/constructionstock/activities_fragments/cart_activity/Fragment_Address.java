@@ -3,6 +3,7 @@ package com.creativeshare.constructionstock.activities_fragments.cart_activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -26,11 +27,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.models.ItemCartUploadModel;
+import com.creativeshare.constructionstock.models.OrderIdModel;
 import com.creativeshare.constructionstock.models.PlaceGeocodeData;
 import com.creativeshare.constructionstock.models.PlaceMapDetailsData;
 import com.creativeshare.constructionstock.models.UserModel;
@@ -38,6 +41,7 @@ import com.creativeshare.constructionstock.preferences.Preferences;
 import com.creativeshare.constructionstock.remote.Api;
 import com.creativeshare.constructionstock.share.Common;
 import com.creativeshare.constructionstock.singleton.CartSingleton;
+import com.creativeshare.constructionstock.tags.Tags;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -257,7 +261,67 @@ public class Fragment_Address extends Fragment implements OnCountryPickerListene
 
     private void send(ItemCartUploadModel itemCartUploadModel) {
 
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .sendOrder(itemCartUploadModel)
+                .enqueue(new Callback<OrderIdModel>() {
+                    @Override
+                    public void onResponse(Call<OrderIdModel> call, Response<OrderIdModel> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful()&&response.body()!=null)
+                        {
+                            CreateSuccessDialog(response.body().getId());
+                        }else
+                            {
+                                Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderIdModel> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Log.e("error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
     }
+
+    private void CreateSuccessDialog(final int order_id) {
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_add_order,null);
+        TextView tvMsg = view.findViewById(R.id.tvMsg);
+        TextView tvCancel = view.findViewById(R.id.tvCancel);
+        tvMsg.setText(String.format("%s %s",getString(R.string.order_added_num_is),String.valueOf(order_id)));
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                activity.finish();
+
+            }
+        });
+
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+
+    }
+
 
     private void CreateCountryDialog() {
         CountryPicker.Builder builder = new CountryPicker.Builder()

@@ -128,4 +128,6 @@
     <string name="empty_cart">السلة فارغة</string>
     <string name="date">موعد التنزيل</string>
     <string name="done2">إرسال الطلب</string>
+    <string name="add_order">إضافة طلب</string>
+    <string name="order_added_num_is">تم إضافة الطلب بنجاح رقم الطلب هو :</string>
 </resources>

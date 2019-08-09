@@ -125,5 +125,7 @@
     <string name="empty_cart">Empty cart</string>
     <string name="date">Date</string>
     <string name="done2">Done</string>
+    <string name="add_order">Add order</string>
+    <string name="order_added_num_is">Order added successfully. the order number is :</string>
 
 </resources>
