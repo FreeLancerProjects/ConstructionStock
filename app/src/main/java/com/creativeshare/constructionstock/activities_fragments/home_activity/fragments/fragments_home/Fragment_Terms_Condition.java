@@ -17,11 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
 import com.creativeshare.constructionstock.activities_fragments.sign_in_sign_up_activity.activity.Login_Activity;
-import com.creativeshare.constructionstock.models.TermsModel;
+import com.creativeshare.constructionstock.models.AboutApp;
 import com.creativeshare.constructionstock.remote.Api;
 import com.creativeshare.constructionstock.tags.Tags;
 
@@ -98,78 +97,50 @@ public class Fragment_Terms_Condition extends Fragment {
             if (type == 1)
             {
                 tv_title.setText(getString(R.string.terms_of_service));
-                //getTermsCondition();
 
             }else if (type == 2)
             {
                 tv_title.setText(getString(R.string.about_tour));
 
-              //  getAboutUs();
             }
+
+            aboutApp(type);
         }
     }
 
-  /*  private void getTermsCondition()
+    private void aboutApp(final int type)
     {
-
         Api.getService(Tags.base_url)
-                .getTerms()
-                .enqueue(new Callback<TermsModel>() {
+                .aboutApp()
+                .enqueue(new Callback<AboutApp>() {
                     @Override
-                    public void onResponse(Call<TermsModel> call, Response<TermsModel> response) {
+                    public void onResponse(Call<AboutApp> call, Response<AboutApp> response) {
                         progBar.setVisibility(View.GONE);
                         if (response.isSuccessful()&&response.body()!=null)
                         {
+
                             if (current_language.equals("ar"))
                             {
-                                tv_content.setText(response.body().getAr_content());
-                            }else
+                                if (type == 1)
                                 {
-                                    tv_content.setText(response.body().getEn_content());
+                                    tv_content.setText(response.body().getConditions().getAr_content());
+
+                                }else
+                                    {
+                                        tv_content.setText(response.body().getAbout().getAr_content());
+
+                                    }
+                            }else
+                            {
+                                if (type == 1)
+                                {
+                                    tv_content.setText(response.body().getConditions().getEn_content());
+
+                                }else
+                                {
+                                    tv_content.setText(response.body().getAbout().getEn_content());
 
                                 }
-                        }else
-                        {
-
-
-                            Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                            try {
-                                Log.e("Error_code",response.code()+"_"+response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<TermsModel> call, Throwable t) {
-                        try {
-                            progBar.setVisibility(View.GONE);
-                            Toast.makeText(activity, R.string.something, Toast.LENGTH_SHORT).show();
-                            Log.e("Error",t.getMessage());
-                        }catch (Exception e){}
-                    }
-                });
-
-    }*/
-
- /*   private void getAboutUs()
-    {
-
-        Api.getService(Tags.base_url)
-                .getAboutUs()
-                .enqueue(new Callback<TermsModel>() {
-                    @Override
-                    public void onResponse(Call<TermsModel> call, Response<TermsModel> response) {
-                        progBar.setVisibility(View.GONE);
-                        if (response.isSuccessful()&&response.body()!=null)
-                        {
-                            if (current_language.equals("ar")||current_language.equals("ur"))
-                            {
-                                tv_content.setText(response.body().getAr_content());
-                            }else
-                            {
-                                tv_content.setText(response.body().getEn_content());
 
                             }
                         }else
@@ -186,7 +157,7 @@ public class Fragment_Terms_Condition extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<TermsModel> call, Throwable t) {
+                    public void onFailure(Call<AboutApp> call, Throwable t) {
                         try {
                             progBar.setVisibility(View.GONE);
                             Toast.makeText(activity, R.string.something, Toast.LENGTH_SHORT).show();
@@ -194,9 +165,7 @@ public class Fragment_Terms_Condition extends Fragment {
                         }catch (Exception e){}
                     }
                 });
-
     }
-*/
 
 
 }

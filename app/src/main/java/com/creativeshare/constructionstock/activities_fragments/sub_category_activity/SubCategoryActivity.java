@@ -165,7 +165,7 @@ public class SubCategoryActivity extends AppCompatActivity {
     }
 
     private void addToCart(CategoriesDataModel.SubCategory model, String amount) {
-        ItemCartModel itemCartModel = new ItemCartModel(model.getId(),model.getAr_title(),model.getEn_title(),model.getImage(),model.getCat_id(),model.getId(),amount);
+        ItemCartModel itemCartModel = new ItemCartModel(model.getId(),model.getAr_title(),model.getEn_title(),model.getImage(),model.getCat_id(),model.getId(),Double.parseDouble(amount));
         cartSingleton.addItem(itemCartModel);
         Toast.makeText(this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
         hasItem = true;

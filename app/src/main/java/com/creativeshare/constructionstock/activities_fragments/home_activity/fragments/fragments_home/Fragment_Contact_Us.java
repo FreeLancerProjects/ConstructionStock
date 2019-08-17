@@ -37,7 +37,7 @@ import retrofit2.Response;
 
 public class Fragment_Contact_Us  extends Fragment {
     private ImageView image_back;
-    private EditText edt_name,edt_email,edt_msg;
+    private EditText edt_name,edt_email, edt_subject,edt_message;
     private Button btn_send;
     private String current_language;
     private Home_Activity activity;
@@ -75,7 +75,9 @@ public class Fragment_Contact_Us  extends Fragment {
         image_back = view.findViewById(R.id.image_back);
         edt_name = view.findViewById(R.id.edt_name);
         edt_email = view.findViewById(R.id.edt_email);
-        edt_msg = view.findViewById(R.id.edt_msg);
+        edt_subject = view.findViewById(R.id.edt_subject);
+        edt_message = view.findViewById(R.id.edt_message);
+
         btn_send = view.findViewById(R.id.btn_send);
 
         updateUI();
@@ -105,30 +107,32 @@ public class Fragment_Contact_Us  extends Fragment {
 
         if (userModel!=null)
         {
-            if (userModel.getUser()==null) {
-                edt_name.setText(userModel.getUser().getUsername());
-                edt_email.setText(userModel.getUser().getEmail());
-            }
+            edt_name.setText(userModel.getUsername());
+            edt_email.setText(userModel.getEmail());
         }
     }
 
     private void CheckData() {
         String m_name = edt_name.getText().toString().trim();
         String m_email = edt_email.getText().toString().trim();
-        String m_msg = edt_msg.getText().toString().trim();
+        String m_subject = edt_subject.getText().toString().trim();
+        String m_msg = edt_message.getText().toString().trim();
 
 
         if (!TextUtils.isEmpty(m_name)&&
                 !TextUtils.isEmpty(m_email)&&
                 Patterns.EMAIL_ADDRESS.matcher(m_email).matches()&&
+                !TextUtils.isEmpty(m_subject)&&
                 !TextUtils.isEmpty(m_msg)
         )
         {
             edt_name.setError(null);
             edt_email.setError(null);
-            edt_msg.setError(null);
+            edt_subject.setError(null);
+            edt_message.setError(null);
+
             Common.CloseKeyBoard(activity,edt_name);
-            Send(m_name,m_email,m_msg);
+            Send(m_name,m_email,m_subject,m_msg);
         }else
             {
                 if (TextUtils.isEmpty(m_name))
@@ -155,26 +159,35 @@ public class Fragment_Contact_Us  extends Fragment {
 
                 }
 
-                if (TextUtils.isEmpty(m_msg))
+                if (TextUtils.isEmpty(m_subject))
                 {
-                    edt_msg.setError(getString(R.string.field_req));
+                    edt_subject.setError(getString(R.string.field_req));
                 }else
                 {
-                    edt_msg.setError(null);
+                    edt_subject.setError(null);
+
+                }
+
+                if (TextUtils.isEmpty(m_msg))
+                {
+                    edt_message.setError(getString(R.string.field_req));
+                }else
+                {
+                    edt_message.setError(null);
 
                 }
 
             }
     }
 
-    private void Send(String m_name, String m_email, String m_msg) {
+    private void Send(String m_name, String m_email, String m_subject, String m_msg) {
 
 
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
 
         Api.getService(Tags.base_url)
-                .contact_us(m_name,m_email,m_msg)
+                .contact_us(m_name,m_email,m_subject,m_msg)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -94,7 +94,9 @@ public class Fragment_Home extends Fragment {
                     }
             }else if (data.hasExtra("order_sent"))
             {
-
+                singleton.clear();
+                updateCartCount(0);
+                activity.refreshFragmentOrder();
             }
         }
     }
@@ -116,7 +118,7 @@ public class Fragment_Home extends Fragment {
         bottomNavigationView.setForceTint(true);
         bottomNavigationView.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
         bottomNavigationView.setColored(false);
-        bottomNavigationView.setTitleTextSizeInSp(16,13);
+        bottomNavigationView.setTitleTextSizeInSp(14,13);
         bottomNavigationView.setCurrentItem(0);
 
 
@@ -152,15 +154,8 @@ public class Fragment_Home extends Fragment {
 
 
                     case 3:
-                       // if (userModel!=null)
-                      //  {
-                            activity.DisplayFragmentMore();
+                        activity.DisplayFragmentMore();
 
-                       // }else
-                     //   {
-                          //  Common.CreateUserNotSignInAlertDialog(activity);
-
-                       // }
                         break;
 
 

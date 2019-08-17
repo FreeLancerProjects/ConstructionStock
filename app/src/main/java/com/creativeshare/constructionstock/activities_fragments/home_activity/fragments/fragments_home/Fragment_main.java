@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -17,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
@@ -43,10 +42,9 @@ public class Fragment_main extends Fragment {
     private Home_Activity activity;
     private Preferences preferences;
     private String curent_language;
-    private ImageView arrow;
-    private LinearLayout ll_back;
     private RecyclerView recView;
     private LinearLayoutManager manager;
+    private SwipeRefreshLayout swipeRefresh;
     private ProgressBar progBar;
     private Categories_Adapter categories_adapter;
     private List<CategoriesDataModel.CategoryModel> categoryModelList;
@@ -70,9 +68,10 @@ public class Fragment_main extends Fragment {
         preferences = Preferences.getInstance();
         Paper.init(activity);
         curent_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
-        arrow = view.findViewById(R.id.arrow);
-        ll_back = view.findViewById(R.id.ll_back);
         recView = view.findViewById(R.id.recv_main);
+        swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        swipeRefresh.setColorSchemeColors(ContextCompat.getColor(activity,R.color.colorPrimary),ContextCompat.getColor(activity,R.color.cart),ContextCompat.getColor(activity,R.color.delete_color),ContextCompat.getColor(activity,R.color.black));
+
         progBar = view.findViewById(R.id.progBarAds);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
@@ -84,6 +83,13 @@ public class Fragment_main extends Fragment {
         categories_adapter = new Categories_Adapter(categoryModelList, activity,this);
         recView.setAdapter(categories_adapter);
 
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
+
 
 
     }
@@ -94,9 +100,10 @@ public class Fragment_main extends Fragment {
             @Override
             public void onResponse(Call<CategoriesDataModel> call, Response<CategoriesDataModel> response) {
                 progBar.setVisibility(View.GONE);
-
+                swipeRefresh.setRefreshing(false);
                 if (response.isSuccessful()&&response.body()!=null) {
                     if (response.body().getData().size() > 0) {
+                        categoryModelList.clear();
                         categoryModelList.addAll(response.body().getData());
                         categories_adapter.notifyDataSetChanged();
 
@@ -114,6 +121,8 @@ public class Fragment_main extends Fragment {
             @Override
             public void onFailure(Call<CategoriesDataModel> call, Throwable t) {
                 try {
+                    swipeRefresh.setRefreshing(false);
+
                     progBar.setVisibility(View.GONE);
                     Log.e("error message", t.getMessage());
                 }catch (Exception e){}

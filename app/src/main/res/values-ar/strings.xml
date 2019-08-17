@@ -20,7 +20,7 @@
     <string name="contact_us">اتصل بنا</string>
     <string name="language_setting">اعدادات اللغة</string>
     <string name="Log_out">تسجيل الخروج</string>
-    <string name="accountِ">حسابى</string>
+    <string name="account">حسابى</string>
     <string name="order_number">رقم الطلب</string>
     <string name="add_rate">إضافة تقييم</string>
     <string name="just_now">الان</string>
@@ -130,4 +130,15 @@
     <string name="done2">إرسال الطلب</string>
     <string name="add_order">إضافة طلب</string>
     <string name="order_added_num_is">تم إضافة الطلب بنجاح رقم الطلب هو :</string>
+    <string name="order_status">حالة الطلب</string>
+    <string name="order_accepted2">تم قبول الطلب رقم الطلب هو :</string>
+    <string name="order_shipped">تم شحن الطلب.</string>
+    <string name="delivering_order">جار توصيل الطلب.</string>
+    <string name="receiving_order">جار استلام الطلب.</string>
+    <string name="follow_delegate">تتبع المندوب</string>
+    <string name="new_offer">عرض جديد</string>
+    <string name="new_order">طلب جديد</string>
+    <string name="offer_value">قيمة العرض :</string>
+    <string name="sar">ر.س</string>
+    <string name="msg">الرسالة</string>
 </resources>

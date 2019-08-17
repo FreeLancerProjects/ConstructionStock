@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.creativeshare.constructionstock.R;
-import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Orders;
+import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.fragment_orders.Fragment_Current_Order;
 import com.creativeshare.constructionstock.models.OrderDataModel;
 
 import java.util.List;
@@ -29,14 +29,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<OrderDataModel.OrderModel> orderModelList;
     private Context context;
     private Fragment fragment;
-    private String user_type;
 
-    public OrdersAdapter(List<OrderDataModel.OrderModel> orderModelList, Context context, Fragment fragment, String user_type) {
+    public OrdersAdapter(List<OrderDataModel.OrderModel> orderModelList, Context context, Fragment fragment) {
 
         this.orderModelList = orderModelList;
         this.context = context;
         this.fragment = fragment;
-        this.user_type = user_type;
     }
 
     @NonNull
@@ -65,11 +63,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             myHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (fragment instanceof Fragment_Orders)
+                    if (fragment instanceof Fragment_Current_Order)
                     {
                         OrderDataModel.OrderModel orderModel = orderModelList.get(myHolder.getAdapterPosition());
-                        Fragment_Orders fragment_current_order = (Fragment_Orders) fragment;
-                   ///     fragment_current_order.setItemData(orderModel,holder.getAdapterPosition());
+                        Fragment_Current_Order fragment_current_order = (Fragment_Current_Order) fragment;
+                        fragment_current_order.setItemData(orderModel);
 
                     }
                 }
@@ -89,7 +87,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public class MyHolder extends RecyclerView.ViewHolder {
         private CircleImageView image;
         private ImageView image_state;
-        private TextView tv_name, tv_order_num,tv_order_type;
+        private TextView tv_name, tv_order_num;
 
         public MyHolder(View itemView) {
             super(itemView);
@@ -99,19 +97,18 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             tv_order_num = itemView.findViewById(R.id.tv_order_num);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_order_type = itemView.findViewById(R.id.tv_order_type);
 
 
         }
 
         public void BindData(OrderDataModel.OrderModel orderModel) {
             tv_order_num.setText("#" + orderModel.getId());
+            tv_name.setText(orderModel.getCompany_name());
 
-
-            if (fragment instanceof Fragment_Orders)
+            if (fragment instanceof Fragment_Current_Order)
             {
                 image_state.setImageResource(R.drawable.ic_clock);
-                image_state.setColorFilter(ContextCompat.getColor(context,R.color.colorPrimary));
+                image_state.setColorFilter(ContextCompat.getColor(context,R.color.cart));
             }else
                 {
                     image_state.setImageResource(R.drawable.ic_done);

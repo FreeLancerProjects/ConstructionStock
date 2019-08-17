@@ -1,14 +1,14 @@
-package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home;
-
+package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.fragment_orders;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -22,36 +22,42 @@ import com.creativeshare.constructionstock.adapters.OrdersAdapter;
 import com.creativeshare.constructionstock.models.OrderDataModel;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
+import com.creativeshare.constructionstock.remote.Api;
+import com.creativeshare.constructionstock.tags.Tags;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class Fragment_Orders extends Fragment {
+
+public class Fragment_Previous_Order extends Fragment {
     private RecyclerView recView;
     private LinearLayoutManager manager;
     private ProgressBar progBar;
     private LinearLayout ll_no_order;
+    private Preferences preferences;
     private OrdersAdapter adapter;
     private List<OrderDataModel.OrderModel> orderModelList;
-    private Preferences preferences;
     private UserModel userModel;
     private Home_Activity activity;
     private boolean isLoading = false;
     private int current_page=1;
-    private int selected_pos = -1;
 
-    public static Fragment_Orders newInstance() {
+    public static Fragment_Previous_Order newInstance() {
 
-        Fragment_Orders fragment_orders = new Fragment_Orders();
-        return fragment_orders;
+        Fragment_Previous_Order fragment_previous_order = new Fragment_Previous_Order();
+        return fragment_previous_order;
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_orders, container, false);
+        View view = inflater.inflate(R.layout.fragment_current_previous_order, container, false);
         initView(view);
         return view;
     }
@@ -67,8 +73,8 @@ public class Fragment_Orders extends Fragment {
         recView = view.findViewById(R.id.recView);
         manager = new LinearLayoutManager(activity);
         recView.setLayoutManager(manager);
-
-        //recView.setAdapter(adapter);
+        adapter = new OrdersAdapter(orderModelList,activity,this);
+        recView.setAdapter(adapter);
         recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -100,8 +106,8 @@ public class Fragment_Orders extends Fragment {
     public void getOrders()
     {
 
-       /* Api.getService(Tags.base_url)
-                .getOrders(user_type,userModel.getUser().getId(),company_id,"1",1)
+        Api.getService(Tags.base_url)
+                .getPreviousOrders(userModel.getId(),1)
                 .enqueue(new Callback<OrderDataModel>() {
                     @Override
                     public void onResponse(Call<OrderDataModel> call, Response<OrderDataModel> response) {
@@ -112,19 +118,17 @@ public class Fragment_Orders extends Fragment {
                             orderModelList.addAll(response.body().getData());
                             if (orderModelList.size()>0)
                             {
-                                Log.e("2","2");
-
                                 ll_no_order.setVisibility(View.GONE);
                                 adapter.notifyDataSetChanged();
 
                             }else
                             {
-                                Log.e("3","3");
-
                                 ll_no_order.setVisibility(View.VISIBLE);
+
                             }
                         }else
                         {
+
                             Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                             try {
                                 Log.e("Error_code", response.code() + "_" + response.errorBody().string());
@@ -137,19 +141,21 @@ public class Fragment_Orders extends Fragment {
                     @Override
                     public void onFailure(Call<OrderDataModel> call, Throwable t) {
                         try {
+
                             progBar.setVisibility(View.GONE);
                             Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
                             Log.e("error",t.getMessage());
                         }catch (Exception e){}
                     }
-                });*/
+                });
     }
 
-    private void loadMore(int page) {
+    private void loadMore(int page)
+    {
 
 
-      /*  Api.getService(Tags.base_url)
-                .getOrders(user_type,userModel.getUser().getId(),userModel.getUser().getCompany_information().getId(),"1",page)
+        Api.getService(Tags.base_url)
+                .getPreviousOrders(userModel.getId(),page)
                 .enqueue(new Callback<OrderDataModel>() {
                     @Override
                     public void onResponse(Call<OrderDataModel> call, Response<OrderDataModel> response) {
@@ -181,34 +187,8 @@ public class Fragment_Orders extends Fragment {
                             Log.e("error",t.getMessage());
                         }catch (Exception e){}
                     }
-                });*/
-    }
-    public void setItemData(OrderDataModel.OrderModel orderModel, int adapterPosition) {
-        this.selected_pos =adapterPosition;
-
-         //   activity.DisplayFragmentOrderDetails(orderModel.getId(),orderModel.getOffer_price());
-
+                });
     }
 
-    public void removeItem()
-    {
-        new Handler()
-                .postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (selected_pos !=-1)
-                        {
-                            orderModelList.remove(selected_pos);
-                            adapter.notifyItemRemoved(selected_pos);
-                            selected_pos = -1;
-
-                            if (orderModelList.size()==0)
-                            {
-                                ll_no_order.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    }
-                },1000);
-
-    }
 }
+

@@ -22,6 +22,7 @@ public class Splash_Activity extends AppCompatActivity {
    private Preferences preferences;
    private String session;
    private Animation animation;
+   private boolean isHasNotificationData = false;
 
 
     @Override
@@ -34,6 +35,14 @@ public class Splash_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         initView();
+        getDataFromIntent();
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent.getExtras()!=null){
+            isHasNotificationData = true;
+        }
     }
 
     private void initView() {
@@ -54,6 +63,7 @@ public class Splash_Activity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 if(session.equals(Tags.session_login)){
                     Intent intent = new Intent(Splash_Activity.this, Home_Activity.class);
+                    intent.putExtra("hasDataNotification",isHasNotificationData);
                     startActivity(intent);
                 }
                 else {

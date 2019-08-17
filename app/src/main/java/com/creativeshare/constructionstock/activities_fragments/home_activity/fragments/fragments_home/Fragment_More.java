@@ -1,5 +1,6 @@
 package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,18 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.creativeshare.constructionstock.R;
+import com.creativeshare.constructionstock.activities_fragments.activity_edit_profile.EditProfileActivity;
+import com.creativeshare.constructionstock.activities_fragments.activity_profile.ProfileActivity;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
-import com.zcw.togglebutton.ToggleButton;
+
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -28,12 +31,10 @@ import io.paperdb.Paper;
 
 public class Fragment_More extends Fragment {
     private Home_Activity activity;
-    private LinearLayout ll_allow_receive_order;
-    private ConstraintLayout cons_edit_profile,cons_language,cons_terms,cons_rate,cons_about,cons_contact;
-    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6;
+    private ConstraintLayout cons_profile,cons_edit_profile,cons_language,cons_terms,cons_rate,cons_about,cons_contact,cons_logout;
+    private ImageView arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7,arrow8;
     private String current_language;
     private String[] language_array;
-    private ToggleButton toggle_btn;
     private UserModel userModel;
     private Preferences preferences;
 
@@ -63,6 +64,8 @@ public class Fragment_More extends Fragment {
         arrow4 = view.findViewById(R.id.arrow4);
         arrow5 = view.findViewById(R.id.arrow5);
         arrow6 = view.findViewById(R.id.arrow6);
+        arrow7 = view.findViewById(R.id.arrow7);
+        arrow8 = view.findViewById(R.id.arrow8);
 
 
         language_array = new String[]{"English","العربية"};
@@ -76,10 +79,12 @@ public class Fragment_More extends Fragment {
             arrow4.setRotation(180.0f);
             arrow5.setRotation(180.0f);
             arrow6.setRotation(180.0f);
+            arrow7.setRotation(180.0f);
+            arrow8.setRotation(180.0f);
 
         }
 
-        ll_allow_receive_order = view.findViewById(R.id.ll_allow_receive_order);
+        cons_profile = view.findViewById(R.id.cons_profile);
 
         cons_edit_profile = view.findViewById(R.id.cons_edit_profile);
         cons_language = view.findViewById(R.id.cons_language);
@@ -87,19 +92,8 @@ public class Fragment_More extends Fragment {
         cons_rate = view.findViewById(R.id.cons_rate);
         cons_about = view.findViewById(R.id.cons_about);
         cons_contact = view.findViewById(R.id.cons_contact);
+        cons_logout = view.findViewById(R.id.cons_logout);
 
-      //  toggle_btn = view.findViewById(R.id.toggle_btn);
-
-      /*  if (userModel.getUser().getCompany_information()!=null)
-        {
-            if (userModel.getUser().getCompany_information().getIs_avaliable()==0)
-            {
-                toggle_btn.setToggleOff();
-            }else
-                {
-                    toggle_btn.setToggleOn();
-                }
-        }*/
         cons_rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,30 +135,32 @@ public class Fragment_More extends Fragment {
             }
         });
 
+        cons_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         cons_edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //activity.DisplayFragmentEditProfile();
+
+                Intent intent = new Intent(activity, EditProfileActivity.class);
+                startActivityForResult(intent,2536);
+
+
+            }
+        });
+
+        cons_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.Logout();
             }
         });
 
 
-
-
-
-
-
-
-        /*if (userModel!=null&&userModel.getUser().getCompany_information()!=null)
-        {
-            ll_allow_receive_order.setVisibility(View.VISIBLE);
-        }else
-        {
-            ll_allow_receive_order.setVisibility(View.GONE);
-
-
-        }
-*/
     }
 
 
@@ -227,4 +223,16 @@ public class Fragment_More extends Fragment {
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==2536&&resultCode== Activity.RESULT_OK&&data!=null)
+        {
+            if (data.hasExtra("data"))
+            {
+                userModel = (UserModel) data.getSerializableExtra("data");
+                activity.updateUserData(userModel);
+            }
+        }
+    }
 }

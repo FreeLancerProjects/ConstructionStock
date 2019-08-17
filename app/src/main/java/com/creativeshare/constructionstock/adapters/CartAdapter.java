@@ -92,7 +92,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Cart_Holder> {
                 tvTitle.setText(itemCartModel.getEn_name());
             }
 
-            tvAmount.setText(itemCartModel.getAmount());
+            tvAmount.setText(String.valueOf(itemCartModel.getAmount()));
             Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL + itemCartModel.getImage())).fit().into(image);
         }
 

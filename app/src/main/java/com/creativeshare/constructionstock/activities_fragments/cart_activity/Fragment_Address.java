@@ -192,6 +192,7 @@ public class Fragment_Address extends Fragment implements OnCountryPickerListene
             public void onClick(View view) {
                 if (userModel!=null)
                 {
+
                     checkData();
 
                 }else
@@ -221,9 +222,10 @@ public class Fragment_Address extends Fragment implements OnCountryPickerListene
             tv_code.setError(null);
             edtAddress.setError(null);
             edt_phone.setError(null);
+            tvDate.setError(null);
             Common.CloseKeyBoard(activity,edt_phone);
             String mPhone = code.replace("+","00")+phone;
-            itemCartUploadModel = new ItemCartUploadModel(userModel.getUser().getId(),address,lat,lng,String.valueOf(date),mPhone,singleton.getItemCartModelList());
+            itemCartUploadModel = new ItemCartUploadModel(userModel.getId(),address,lat,lng,String.valueOf(date/1000),mPhone,singleton.getItemCartModelList());
             send(itemCartUploadModel);
 
 
@@ -253,6 +255,15 @@ public class Fragment_Address extends Fragment implements OnCountryPickerListene
                 }else
                 {
                     edtAddress.setError(null);
+
+                }
+
+                if (date==0)
+                {
+                    tvDate.setError(getString(R.string.field_req));
+                }else
+                {
+                    tvDate.setError(null);
 
                 }
 
@@ -308,6 +319,9 @@ public class Fragment_Address extends Fragment implements OnCountryPickerListene
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                Intent intent = activity.getIntent();
+                intent.putExtra("order_sent",true);
+                activity.setResult(Activity.RESULT_OK,intent);
                 activity.finish();
 
             }

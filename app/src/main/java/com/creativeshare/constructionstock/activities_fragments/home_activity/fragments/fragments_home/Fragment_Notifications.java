@@ -1,12 +1,16 @@
 package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,16 +21,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.creativeshare.constructionstock.R;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
+import com.creativeshare.constructionstock.activities_fragments.offer_details_activity.OfferDetailsActivity;
 import com.creativeshare.constructionstock.adapters.NotificationsAdapter;
 import com.creativeshare.constructionstock.models.NotificationDataModel;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
+import com.creativeshare.constructionstock.remote.Api;
+import com.creativeshare.constructionstock.tags.Tags;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Fragment_Notifications extends Fragment {
 
@@ -113,22 +124,20 @@ public class Fragment_Notifications extends Fragment {
 
     }
 
-    private void getNotification() {
+    public void getNotification() {
 
         if (userModel == null) {
             preferences = Preferences.getInstance();
             userModel = preferences.getUserData(activity);
         }
 
-        String user_type;
-        String user_id;
 
 
 
 
 
-     /*   Api.getService(Tags.base_url)
-                .getNotifications(user_type,user_id,company_id,1)
+        Api.getService(Tags.base_url)
+                .getNotification(userModel.getId(),1)
                 .enqueue(new Callback<NotificationDataModel>() {
             @Override
             public void onResponse(Call<NotificationDataModel> call, Response<NotificationDataModel> response) {
@@ -168,7 +177,7 @@ public class Fragment_Notifications extends Fragment {
                 } catch (Exception e) {
                 }
             }
-        });*/
+        });
 
     }
     private void loadMore(int page_index)
@@ -178,13 +187,10 @@ public class Fragment_Notifications extends Fragment {
             userModel = preferences.getUserData(activity);
         }
 
-        String user_type;
-        String company_id;
-        String user_id;
 
 
-       /* Api.getService(Tags.base_url)
-                .getNotifications(user_type,user_id,company_id,page_index)
+        Api.getService(Tags.base_url)
+                .getNotification(userModel.getId(),page_index)
                 .enqueue(new Callback<NotificationDataModel>() {
                     @Override
                     public void onResponse(Call<NotificationDataModel> call, Response<NotificationDataModel> response) {
@@ -198,7 +204,7 @@ public class Fragment_Notifications extends Fragment {
                             if (response.body() != null && response.body().getData().size() > 0) {
                                 notificationModelList.addAll(response.body().getData());
                                 adapter.notifyDataSetChanged();
-                                current_page = response.body().getMeta().getCurrent_page();
+                                current_page = response.body().getCurrent_page();
                             }
                         } else {
 
@@ -223,58 +229,19 @@ public class Fragment_Notifications extends Fragment {
                         } catch (Exception e) {
                         }
                     }
-                });*/
+                });
     }
 
-  /*  public void setItemData(NotificationDataModel.NotificationModel notificationModel, int adapterPosition)
+    public void setItemData(NotificationDataModel.NotificationModel notificationModel, int adapterPosition)
     {
         this.selected_pos =adapterPosition;
-        if (notificationModel.getAction_type().equals("1")&&notificationModel.getOrder_type().equals(Tags.WATER_ORDER))
+        if (notificationModel.getAction_type()==1)
         {
-            activity.DisplayFragmentCompanyAddWaterOffer(Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getId());
-        }else if (notificationModel.getAction_type().equals("1")&&notificationModel.getOrder_type().equals(Tags.SHIPPING_ORDER))
-        {
-            activity.DisplayFragmentCompanyAddShipmentOffer(Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getId());
+            Intent intent = new Intent(activity, OfferDetailsActivity.class);
+            intent.putExtra("data",notificationModel);
+            startActivityForResult(intent,1747);
         }
-        else if (notificationModel.getAction_type().equals("1")&&notificationModel.getOrder_type().equals(Tags.RENTAL_ORDER))
-        {
-            activity.DisplayFragmentCompanyAddRentalEquipmentOffer(Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getId());
-        }
-        else if (notificationModel.getAction_type().equals("1")&&notificationModel.getOrder_type().equals(Tags.CONTAINERS_ORDER))
-        {
-            activity.DisplayFragmentCompanyAddContainersOffer(Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getId());
-        }
-        else if (notificationModel.getAction_type().equals("1")&&notificationModel.getOrder_type().equals(Tags.CLEARANCE_ORDER))
-        {
-            activity.DisplayFragmentCompanyAddCustomsOffer(Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getId());
-        }
-        else if (notificationModel.getAction_type().equals("1")&&notificationModel.getOrder_type().equals(Tags.ENGINEERING_ORDER))
-        {
-            activity.DisplayFragmentCompanyAddEngineeringOffer(Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getId());
-        }else if (notificationModel.getAction_type().equals("2")&&notificationModel.getOrder_type().equals(Tags.WATER_ORDER))
-        {
-            activity.DisplayFragmentClientWaterOffer(notificationModel.getId(), Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getOffer_id(),notificationModel.getOffer_price());
-        }else if (notificationModel.getAction_type().equals("2")&&notificationModel.getOrder_type().equals(Tags.SHIPPING_ORDER))
-        {
-            activity.DisplayFragmentClientShipmentOffer(notificationModel.getId(), Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getOffer_id(),notificationModel.getOffer_price());
-        }
-        else if (notificationModel.getAction_type().equals("2")&&notificationModel.getOrder_type().equals(Tags.RENTAL_ORDER))
-        {
-            activity.DisplayFragmentClientRentalEquipmentOffer(notificationModel.getId(), Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getOffer_id(),notificationModel.getOffer_price());
-        }
-        else if (notificationModel.getAction_type().equals("2")&&notificationModel.getOrder_type().equals(Tags.CONTAINERS_ORDER))
-        {
-            activity.DisplayFragmentClientContainersOffer(notificationModel.getId(), Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getOffer_id(),notificationModel.getOffer_price());
-        }
-        else if (notificationModel.getAction_type().equals("2")&&notificationModel.getOrder_type().equals(Tags.CLEARANCE_ORDER))
-        {
-            activity.DisplayFragmentClientCustomsOffer(notificationModel.getId(), Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getOffer_id(),notificationModel.getOffer_price());
-        }
-        else if (notificationModel.getAction_type().equals("2")&&notificationModel.getOrder_type().equals(Tags.ENGINEERING_ORDER))
-        {
-            activity.DisplayFragmentClientEngineeringOffer(notificationModel.getId(), Integer.parseInt(notificationModel.getOrder_id()),notificationModel.getOffer_id(),notificationModel.getOffer_price());
-        }
-    }*/
+    }
 
     public void removeItem()
     {
@@ -289,6 +256,29 @@ public class Fragment_Notifications extends Fragment {
                 ll_not.setVisibility(View.VISIBLE);
             }
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1747&&resultCode== Activity.RESULT_OK&&data!=null)
+        {
+            if (data.hasExtra("action"))
+            {
+                int action = data.getIntExtra("action",0);
+                if (action==1)
+                {
+                    activity.refreshFragmentOrder();
+                    getNotification();
+                    //accept
+                }else if (action ==2)
+                {
+                    activity.refreshFragmentOrder();
+                    getNotification();
+                    //refuse
+                }
+            }
         }
     }
 }

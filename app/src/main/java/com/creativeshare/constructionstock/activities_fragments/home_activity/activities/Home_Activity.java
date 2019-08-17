@@ -1,9 +1,11 @@
 package com.creativeshare.constructionstock.activities_fragments.home_activity.activities;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -20,20 +22,38 @@ import com.creativeshare.constructionstock.activities_fragments.home_activity.fr
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Home;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_More;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Notifications;
-import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Orders;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_Terms_Condition;
 import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.Fragment_main;
+import com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.fragment_orders.Fragment_Orders;
 import com.creativeshare.constructionstock.activities_fragments.sign_in_sign_up_activity.activity.Login_Activity;
 import com.creativeshare.constructionstock.language.Language_Helper;
+import com.creativeshare.constructionstock.models.NotificationStatusModel;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
+import com.creativeshare.constructionstock.remote.Api;
 import com.creativeshare.constructionstock.singleton.CartSingleton;
 import com.creativeshare.constructionstock.tags.Tags;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class Home_Activity extends AppCompatActivity {
@@ -81,14 +101,170 @@ public class Home_Activity extends AppCompatActivity {
                                 }
                             }
                         },1000);
+
+                getDataFromIntent();
+
+
+
             }catch (Exception e){}
 
 
+
+
+
         }
+        try {
+            String lastVisit = preferences.getLastVisit(this);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+            String now = dateFormat.format(new Date(Calendar.getInstance().getTimeInMillis()));
+
+            if (!lastVisit.equals(now))
+            {
+                updateVisit(now,(Calendar.getInstance().getTimeInMillis()/1000));
+
+            }
+            updateUserToken();
+        }catch (Exception e){}
+
+
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenToNotification(NotificationStatusModel statusModel)
+    {
+        try {
+            refreshFragmentOrder();
+            refreshFragmentNotification();
+        }catch (Exception e){}
 
+    }
+    private void getDataFromIntent()
+    {
+        Intent intent = getIntent();
+
+        if (intent!=null&&intent.hasExtra("status"))
+        {
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try
+                            {
+
+                                DisplayFragmentOrders();
+                                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                if (manager!=null)
+                                {
+                                    manager.cancel(1250);
+                                }
+                            }catch (Exception e){}
+                        }
+                    },1000);
+
+        }else if (intent!=null&&intent.hasExtra("hasDataNotification"))
+        {
+            if (intent.getBooleanExtra("hasDataNotification",false))
+            {
+                new Handler()
+                        .postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                try
+                                {
+
+                                    DisplayFragmentOrders();
+                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                    if (manager!=null)
+                                    {
+                                        manager.cancel(1250);
+                                    }
+                                }catch (Exception e){}
+                            }
+                        },1000);
+            }
+
+        }
+    }
+    public void updateUserData(UserModel userModel)
+    {
+        try {
+            this.userModel = userModel;
+
+        }catch (Exception e){}
+
+    }
+    private void updateVisit(final String now, long time) {
+        Api.getService(Tags.base_url)
+                .updateVisit(now,1)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful())
+                        {
+                            preferences.setLastVisit(Home_Activity.this,now);
+                        }else
+                        {
+                            try {
+                                Log.e("errorVisitCode",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        try {
+                            Log.e("Error",t.getMessage()+"_");
+                        }catch (Exception e){}
+                    }
+                });
+    }
+
+    private void updateUserToken() {
+        if (userModel!=null)
+        {
+            EventBus.getDefault().register(this);
+
+            FirebaseInstanceId.getInstance()
+                    .getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                            if (task.isSuccessful())
+                            {
+                                String token = task.getResult().getToken();
+                                Api.getService(Tags.base_url)
+                                        .updateToken(userModel.getId(),token)
+                                        .enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                if (response.isSuccessful())
+                                                {
+                                                    Log.e("token","updated successfully");
+                                                }else
+                                                    {
+                                                        Log.e("token","updated failed");
+
+                                                    }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                try {
+                                                    Log.e("token",t.getMessage());
+
+                                                }catch (Exception e){}
+
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
+    }
 
     public void DisplayFragmentHome()
     {
@@ -140,9 +316,7 @@ public class Home_Activity extends AppCompatActivity {
         if (fragment_notifications != null && fragment_notifications.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_notifications).commit();
         }
-       /* if (fragment_profile != null && fragment_profile.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_profile).commit();
-        }*/
+
         if (fragment_main != null && fragment_main.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_main).commit();
         }
@@ -161,7 +335,7 @@ public class Home_Activity extends AppCompatActivity {
 
         }
         if (fragment_home != null && fragment_home.isAdded()) {
-            fragment_home.UpdateAHBottomNavigationPosition(4);
+            fragment_home.UpdateAHBottomNavigationPosition(3);
         }
 
     }
@@ -171,9 +345,7 @@ public class Home_Activity extends AppCompatActivity {
         if (fragment_more != null && fragment_more.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_more).commit();
         }
-       /* if (fragment_profile != null && fragment_profile.isAdded()) {
-            fragmentManager.beginTransaction().hide(fragment_profile).commit();
-        }*/
+
         if (fragment_main != null && fragment_main.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_main).commit();
         }
@@ -278,29 +450,6 @@ public class Home_Activity extends AppCompatActivity {
             }
         }catch (Exception e){}
     }
-   /* public void DisplayFragmentMain() {
-
-        if (userModel!=null)
-        {
-            fragment_count += 1;
-
-            fragment_main = Fragment_main.newInstance();
-
-
-            if (fragment_main.isAdded()) {
-                fragmentManager.beginTransaction().show(fragment_main).commit();
-            } else {
-                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_main, "fragment_main").addToBackStack("fragment_main").commit();
-
-            }
-        }else
-        {
-            Common.CreateUserNotSignInAlertDialog(this);
-        }
-
-
-    }
-*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -424,15 +573,61 @@ public class Home_Activity extends AppCompatActivity {
 
     }
 
-
-
     public void Logout() {
-        this.userModel = null;
-        preferences.create_update_userdata(this,null);
-        preferences.create_update_session(this, Tags.session_logout);
-        NavigateToSignInActivity(true);
-        CartSingleton singleton = CartSingleton.newInstance();
-        singleton.clear();
-    }
+
+        if (userModel!=null)
+        {
+            preferences.create_update_userdata(this,null);
+            preferences.create_update_session(this, Tags.session_logout);
+            NavigateToSignInActivity(true);
+            CartSingleton singleton = CartSingleton.newInstance();
+            singleton.clear();
+            this.userModel = null;
+
+        }else
+        {
+
+            finish();
+
+
+        }
 
     }
+
+    public void refreshFragmentOrder() {
+
+        try {
+            if (fragment_orders!=null&&fragment_orders.isAdded())
+            {
+                fragment_orders.refreshFragment();
+            }
+        }catch (Exception e)
+        {
+
+        }
+
+    }
+
+    public void refreshFragmentNotification() {
+
+        try {
+            if (fragment_notifications!=null&&fragment_notifications.isAdded())
+            {
+                fragment_notifications.getNotification();
+            }
+        }catch (Exception e)
+        {
+
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+        {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+}

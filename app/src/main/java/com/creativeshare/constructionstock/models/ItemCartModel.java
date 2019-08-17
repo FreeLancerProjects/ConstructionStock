@@ -9,9 +9,9 @@ public class ItemCartModel implements Serializable {
     private String image;
     private int cat_id;
     private int sub_id;
-    private String amount;
+    private double amount;
 
-    public ItemCartModel(int id, String ar_name, String en_name, String image, int cat_id, int sub_id, String amount) {
+    public ItemCartModel(int id, String ar_name, String en_name, String image, int cat_id, int sub_id, double amount) {
         this.id = id;
         this.ar_name = ar_name;
         this.en_name = en_name;
@@ -69,11 +69,11 @@ public class ItemCartModel implements Serializable {
         this.sub_id = sub_id;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

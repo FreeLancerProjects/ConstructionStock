@@ -27,7 +27,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_back_arrow"
-                android:padding="15dp"
+                android:padding="17dp"
                 android:clickable="false"
                 android:longClickable="false"
                 android:tint="@color/white"

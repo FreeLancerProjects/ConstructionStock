@@ -12,7 +12,7 @@
     <string name="si_su">Please Sign in or sign up .</string>
     <string name="home">Home</string>
     <string name="orders">My Order</string>
-    <string name="accountِ">Profile</string>
+    <string name="account">Profile</string>
     <string name="more">More</string>
     <string name="bank_account">Bank Accounts</string>
     <string name="Condition">Terms and Conditions</string>
@@ -127,5 +127,16 @@
     <string name="done2">Done</string>
     <string name="add_order">Add order</string>
     <string name="order_added_num_is">Order added successfully. the order number is :</string>
+    <string name="order_status">Order status</string>
+    <string name="order_accepted2">Order accepted . the number of order is:</string>
+    <string name="order_shipped">Order shipped.</string>
+    <string name="delivering_order">Delivering order.</string>
+    <string name="receiving_order">Receiving order.</string>
+    <string name="follow_delegate">Follow delegate</string>
+    <string name="new_offer">New offer</string>
+    <string name="new_order">New order</string>
+    <string name="offer_value">Offer Value :</string>
+    <string name="sar">SAR</string>
+    <string name="msg">Message</string>
 
 </resources>

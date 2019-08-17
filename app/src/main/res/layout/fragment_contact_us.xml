@@ -121,6 +121,36 @@
                 />
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/msg"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+
+                />
+
+            <EditText
+                android:id="@+id/edt_message"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/linear_shape"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/contact_us_txt_email"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                />
+
+            <TextView
                 android:id="@+id/contact_us_txt_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,7 +166,7 @@
                 />
 
             <EditText
-                android:id="@+id/edt_msg"
+                android:id="@+id/edt_subject"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginLeft="10dp"

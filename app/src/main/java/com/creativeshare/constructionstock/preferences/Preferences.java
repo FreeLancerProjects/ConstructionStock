@@ -89,4 +89,17 @@ public class Preferences {
         return session;
     }
 
+    public void setLastVisit(Context context,String date)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("visit",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("lastVisit",date);
+        editor.apply();
+
+    }
+    public String getLastVisit(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("visit",Context.MODE_PRIVATE);
+        return preferences.getString("lastVisit","0");
+    }
 }
