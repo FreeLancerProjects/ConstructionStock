@@ -587,8 +587,9 @@ public class Home_Activity extends AppCompatActivity {
         }else
         {
 
+            Intent intent = new Intent(Home_Activity.this,Login_Activity.class);
+            startActivity(intent);
             finish();
-
 
         }
 

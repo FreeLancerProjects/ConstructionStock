@@ -23,6 +23,7 @@ import com.creativeshare.constructionstock.activities_fragments.activity_profile
 import com.creativeshare.constructionstock.activities_fragments.home_activity.activities.Home_Activity;
 import com.creativeshare.constructionstock.models.UserModel;
 import com.creativeshare.constructionstock.preferences.Preferences;
+import com.creativeshare.constructionstock.share.Common;
 
 import java.util.Locale;
 
@@ -138,16 +139,33 @@ public class Fragment_More extends Fragment {
         cons_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, ProfileActivity.class);
-                startActivity(intent);
+
+                if (userModel!=null)
+                {
+                    Intent intent = new Intent(activity, ProfileActivity.class);
+                    startActivity(intent);
+                }else
+                    {
+                        Common.CreateUserNotSignInAlertDialog(activity);
+
+                    }
+
             }
         });
         cons_edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(activity, EditProfileActivity.class);
-                startActivityForResult(intent,2536);
+                if (userModel!=null)
+                {
+                    Intent intent = new Intent(activity, EditProfileActivity.class);
+                    startActivityForResult(intent,2536);
+                }else
+                {
+                    Common.CreateUserNotSignInAlertDialog(activity);
+
+                }
+
 
 
             }
