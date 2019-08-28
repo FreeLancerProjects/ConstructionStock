@@ -138,5 +138,6 @@
     <string name="offer_value">Offer Value :</string>
     <string name="sar">SAR</string>
     <string name="msg">Message</string>
+    <string name="finish_order">Finish Order</string>
 
 </resources>

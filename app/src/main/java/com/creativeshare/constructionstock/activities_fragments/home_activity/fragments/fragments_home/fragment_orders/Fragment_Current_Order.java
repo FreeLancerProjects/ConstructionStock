@@ -1,6 +1,7 @@
 package com.creativeshare.constructionstock.activities_fragments.home_activity.fragments.fragments_home.fragment_orders;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -66,7 +67,8 @@ public class Fragment_Current_Order extends Fragment {
         return view;
     }
 
-    private void initView(View view) {
+    private void initView(View view)
+    {
         orderModelList = new ArrayList<>();
         activity = (Home_Activity) getActivity();
         preferences = Preferences.getInstance();
@@ -104,9 +106,6 @@ public class Fragment_Current_Order extends Fragment {
 
 
     }
-
-
-
     public void getOrders()
     {
 
@@ -154,8 +153,8 @@ public class Fragment_Current_Order extends Fragment {
                     }
                 });
     }
-
-    private void loadMore(int page) {
+    private void loadMore(int page)
+    {
 
 
         Api.getService(Tags.base_url)
@@ -193,13 +192,35 @@ public class Fragment_Current_Order extends Fragment {
                     }
                 });
     }
-    public void setItemData(OrderDataModel.OrderModel orderModel) {
+    public void setItemData(OrderDataModel.OrderModel orderModel, int adapterPosition)
+    {
 
+        selected_pos = adapterPosition;
         Intent intent = new Intent(activity, OrderDetailActivity.class);
         intent.putExtra("data",orderModel);
-        startActivity(intent);
+        startActivityForResult(intent,1225);
 
     }
 
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1225&&resultCode== Activity.RESULT_OK&&data!=null)
+        {
+            if (data.hasExtra("end"))
+            {
+                if (selected_pos!=-1)
+                {
+                    orderModelList.remove(selected_pos);
+                    adapter.notifyItemRemoved(selected_pos);
+                    selected_pos=-1;
+
+                    activity.refreshFragmentOrder();
+                }
+
+            }
+        }
+    }
 }

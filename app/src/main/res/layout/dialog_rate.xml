@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="@string/add_rate"
+        android:gravity="center"
+
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray2"/>
+
+
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+        android:id="@+id/rateBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srb_starSize="40dp"
+        app:srb_numberOfStars="5"
+        app:srb_stepSize="1"
+        app:srb_borderColor="@color/colorPrimary"
+        app:srb_fillColor="@color/colorPrimary"
+        app:srb_starBackgroundColor="@color/white"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="30dp"
+        />
+    <TextView
+        android:id="@+id/tvRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        />
+    <Button
+        android:id="@+id/btnRate"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:text="@string/add_rate"
+        android:textSize="16sp"
+        />
+</LinearLayout>

@@ -145,4 +145,11 @@ public interface Services {
 
     );
 
+    @FormUrlEncoded
+    @POST("api/order/end")
+    Call<ResponseBody> endOrder(@Field("order_id") int order_id,
+                                @Field("rating") int rating
+    );
+
+
 }

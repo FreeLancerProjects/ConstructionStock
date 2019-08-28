@@ -67,7 +67,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     {
                         OrderDataModel.OrderModel orderModel = orderModelList.get(myHolder.getAdapterPosition());
                         Fragment_Current_Order fragment_current_order = (Fragment_Current_Order) fragment;
-                        fragment_current_order.setItemData(orderModel);
+                        fragment_current_order.setItemData(orderModel,holder.getAdapterPosition());
 
                     }
                 }

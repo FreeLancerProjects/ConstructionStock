@@ -141,4 +141,5 @@
     <string name="offer_value">قيمة العرض :</string>
     <string name="sar">ر.س</string>
     <string name="msg">الرسالة</string>
+    <string name="finish_order">إنهاء الطلب</string>
 </resources>
