@@ -51,7 +51,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     private LinearLayoutManager manager;
     private OrderProductAdapter adapter;
     private Button btnEnd;
-    private float rate;
+    private float rate=0.0f;
 
 
     @Override
